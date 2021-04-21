@@ -1,12 +1,11 @@
-
+import "./cartWidget.css";
 
 export const CartWidget = () => {
+
   return (
     <div>
-      <i onClick={info} className="fas fa-shopping-cart"></i>
+      <i className="fas fa-shopping-cart cart-size"></i>
+      <span class='badge badge-warning'> 0 </span>
     </div>
   );
 }
-
-
-const info = () => alert("Actualmente el carrito de compras esta vacio");

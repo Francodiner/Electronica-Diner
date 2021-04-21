@@ -1,9 +1,20 @@
-import { Nav, Navbar, NavDropdown } from "react-bootstrap";
+import { useEffect, useState } from "react";
+import { Nav, Navbar, NavDropdown, Form, FormControl } from "react-bootstrap";
 import { CartWidget } from "../CartWidget/cartWidget";
 
 export const NavBar = () => {
 
-const saludo = () => alert("Bienvenido al sitio");
+  const [filter, setFilter] = useState('');
+
+  useEffect(
+    () => {
+     console.log('Cambio el filter') 
+    }, [filter]
+  )
+
+  console.log('filter => ', filter)
+
+  const saludo = () => alert("Bienvenido al sitio");
 
   return (
     <div className="App">
@@ -31,6 +42,9 @@ const saludo = () => alert("Bienvenido al sitio");
                 <Nav.Link>  <CartWidget /></Nav.Link>
               </Nav.Item>
             </Nav>
+            <Form inline>
+              <FormControl type='text' placeholder="Buscar" value={filter} onChange={(e) => setFilter(e.target.value)} className="mr-sm-2 ml-auto" />
+            </Form>
           </Navbar.Collapse>
         </Navbar>
       </header>
