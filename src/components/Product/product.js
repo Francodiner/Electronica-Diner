@@ -15,7 +15,7 @@ export const Product = (props) => {
   }
 
 
-  const [celulares, setCelulares] = useState([
+  const [consolas, setConsolas] = useState([
     {
       title: 'Play 5',
       price: '500',
@@ -38,18 +38,18 @@ export const Product = (props) => {
       title: 'Play 2',
       price: '200',
       description: 'BlueRay',
-      imagen: 'https://lh3.googleusercontent.com/proxy/pvVgyfz1BgYoeKDVvH-D8OpNcaD5EYBD3Id4Bz6WUF6hvRk8fBKwD9PFeS8gRTzgsPMgjzIe490XlI4HhIniz6yRcseGlAdbOPLu3YOBtUhXe6JM8Y8NJMYB_--G_8XTNA',
+      imagen: 'https://i.3djuegos.com/juegos/5392/playstation_2_slim/fotos/set/playstation_2_slim-4283844.jpg',
     }
   ])
 
-  const [celularesFiltrados, setCelularesFiltrados] = useState(celulares);
+  const [consolasFiltradas, setConsolasFiltradas] = useState(consolas);
 
   useEffect(() => {
-      //Cambio los celulares filtrados
-      const nuevosCelularesFiltrados = celulares.filter(celular => celular.title.toLowerCase().includes(filtroBusqueda.toLowerCase())
-      )
-      setCelularesFiltrados(nuevosCelularesFiltrados)
-    }, [filtroBusqueda] 
+    //Cambio los productos filtrados
+    const nuevasConsolasFiltradas = consolas.filter(consola => consola.title.toLowerCase().includes(filtroBusqueda.toLowerCase())
+    )
+    setConsolasFiltradas(nuevasConsolasFiltradas)
+  }, [filtroBusqueda]
   )
 
   /* ARMO LA ESTRUCTURA DEL PRODUCTO (LO QUE QUIERO MOSTRAR Y COMO LO QUIERO MOSTRAR) */
@@ -63,16 +63,16 @@ export const Product = (props) => {
         />
       </Form>
       <Row>
-        {celularesFiltrados.map((celular) => (
+        {consolasFiltradas.map((consola) => (
           <Card>
-            <Card.Img variant="top" style={{ height: '300px' }} src={celular.imagen} />
+            <Card.Img variant="top" style={{ height: '300px' }} src={consola.imagen} />
             <Card.Body>
-              <Card.Title>{celular.title}</Card.Title>
+              <Card.Title>{consola.title}</Card.Title>
               <Card.Text>
-                ${celular.price}
+                ${consola.price}
               </Card.Text>
               <Card.Text>
-                {celular.description}
+                {consola.description}
               </Card.Text>
               <ItemCount stock="5" initial="1" />
             </Card.Body>
