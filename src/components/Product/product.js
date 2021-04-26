@@ -34,12 +34,6 @@ export const Product = (props) => {
       description: 'Not HD',
       imagen: 'https://i.blogs.es/feaa2f/nueva_sony_ps3_slim/450_1000.jpg',
     },
-    {
-      title: 'Play 2',
-      price: '200',
-      description: 'BlueRay',
-      imagen: 'https://i.3djuegos.com/juegos/5392/playstation_2_slim/fotos/set/playstation_2_slim-4283844.jpg',
-    }
   ])
 
   const [consolasFiltradas, setConsolasFiltradas] = useState(consolas);
