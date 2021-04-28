@@ -1,8 +1,8 @@
 import "./itemListContainer.css";
 import { useState, useEffect } from "react";
-import { Card, Row } from "react-bootstrap";
+import { ItemList } from "../ItemList/itemList"
 
-export const ItemListContainer = (props) => {
+export const ItemListContainer = () => {
   const [celulares, setCelulares] = useState([
 
     {
@@ -31,25 +31,12 @@ export const ItemListContainer = (props) => {
     })
   }, [])
 
-  return (
-    <div>
-      <h1 style={{marginTop: '20px'}}>Celulares con Promise</h1>
-      <Row>
-        {products.map((celu) => (
-          <Card>
-            <Card.Img variant="top" style={{ height: '300px' }} src={celu.imagen} />
-            <Card.Body>
-              <Card.Title>{celu.title}</Card.Title>
-              <Card.Text>
-                ${celu.price}
-              </Card.Text>
-              <Card.Text>
-                {celu.id}
-              </Card.Text>
-            </Card.Body>
-          </Card>
-        ))}
-      </Row>
-    </div>
-  )
+  return products.map((item) => (
+    <ItemList
+      id={item.id}
+      title={item.title}
+      price={item.price}
+      imagen={item.imagen}
+    />
+  ))
 }

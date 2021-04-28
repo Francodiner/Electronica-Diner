@@ -4,16 +4,11 @@ import { ItemCount } from "../ItemCount/itemCount"
 
 export const Product = (props) => {
 
-  const oferta = () => {
-    alert(`Compra esta ${props.title} que esta en promoción`);
-  }
-
   const [filtroBusqueda, setFiltroBusqueda] = useState('')
 
   const editarValorFiltro = (e) => {
     setFiltroBusqueda(e.target.value)
   }
-
 
   const [consolas, setConsolas] = useState([
     {
