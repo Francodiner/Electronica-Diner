@@ -1,20 +1,16 @@
-import { Card } from "react-bootstrap";
+import { Link } from 'react-router-dom'
 
 export const ItemList = (props) => {
     return (
-        <div style={{marginTop: '30px'}}>
-            <Card>
-                <Card.Img variant="top" style={{ height: '300px' }} src={props.imagen} />
-                <Card.Body>
-                    <Card.Title>{props.title}</Card.Title>
-                    <Card.Text>
-                        {props.id}
-                    </Card.Text>
-                    <Card.Text>
-                        ${props.price}
-                    </Card.Text>
-                </Card.Body>
-            </Card>
+        <div class="col-md-3">
+            <div href="#" class="card card-product-grid">
+                <Link className="img-wrap" to={`/item/${props.title}`}> <img src={props.image} /></Link>
+                <figcaption class="info-wrap">
+                    <Link className="title" to={`/item/${props.title}`}>{props.title}</Link>
+                    <div class="price mt-1">${props.price}</div>
+                </figcaption>
+                <Link to={`/item/${props.title}`}><button type="button" class="btn btn-dark">Ver mas</button></Link>
+            </div>
         </div>
     )
 }

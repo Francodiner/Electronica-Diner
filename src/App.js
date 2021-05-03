@@ -1,24 +1,31 @@
 import "./App.css";
 import { NavBar } from "./components/NavBar/navBar";
-import { Product } from "./components/Product/product";
 import { ItemListContainer } from "./components/ItemListContainer/itemListContainer";
 import { ItemDetailContainer } from "./components/ItemDetailContainer/itemDetailContainer";
 import { CardGroup } from "react-bootstrap";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 function App() {
 
   return (
     <div className="App">
-      <header>
-        <NavBar />
-        <div>
-          <CardGroup>
-            <Product />
-            <ItemListContainer />
-          </CardGroup>
-          <ItemDetailContainer />  
-        </div>
-      </header>
+      <NavBar />
+      <BrowserRouter>
+        <Switch>
+          <Route exact path='/'>
+            <CardGroup>
+              <ItemListContainer />
+            </CardGroup>
+          </Route>
+          <Route path='/category/:categoryId' >
+              <ItemListContainer />
+          </Route>
+          <Route path='/item/:productId' >
+            <ItemDetailContainer />
+          </Route>
+        </Switch>
+      </BrowserRouter>
+
     </div>
   );
 }

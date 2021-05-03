@@ -1,31 +1,35 @@
 import { useState, useEffect } from "react";
 import { ItemDetail } from "../ItemDetail/itemDetail"
+import { productsGroup } from "../ProductsGroup/productsGroup";
+import { useParams } from 'react-router'
 
 export const ItemDetailContainer = () => {
-    const [product, setProduct] = useState([
-        {
-            title: 'Ktm 390',
-            price: '500.000',
-            imagen: 'https://www.motofichas.com/images/articulos/ktm/rc_390/ktm-rc-390r-matriculada-serie-2018-perfil.jpg',
-        }
-    ])
+    const { productId } = useParams();
+    const [product, setProduct] = useState({})
 
-    const [productLoad, setProductLoad] = useState([]);
+    const getProducts = new Promise((res, rej) => {
+        setTimeout(function () {
+            res(productsGroup);
+        }, 2000);
+    });
 
     useEffect(() => {
-        new Promise((resolve, reject) => {
-            console.log('Cargando producto')
-            setTimeout(() => {
-                resolve(setProductLoad(product))
-            }, 2000)
-        })
-    }, [])
+        getProducts
+            .then((res) => {
+                res.forEach((item) => {
+                    if (item.title === productId) {
+                        setProduct(item);
+                    }
+                });
+            })
+            .catch((err) => alert(err))
+    }, []);
 
-    return productLoad.map((item) => (
-        <ItemDetail
-          title={item.title}
-          price={item.price}
-          imagen={item.imagen}
+    return (
+        <ItemDetail  
+        title={product.title}
+        price={product.price}
+        image={product.image}
         />
-      ))
+    )
 }

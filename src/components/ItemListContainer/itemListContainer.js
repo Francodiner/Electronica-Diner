@@ -1,42 +1,62 @@
-import "./itemListContainer.css";
 import { useState, useEffect } from "react";
 import { ItemList } from "../ItemList/itemList"
+import { Form, FormControl } from "react-bootstrap";
+import { productsGroup } from "../ProductsGroup/productsGroup";
+import { useParams } from 'react-router'
 
-export const ItemListContainer = () => {
-  const [celulares, setCelulares] = useState([
+export function ItemListContainer() {
 
-    {
-      title: 'Iphone X',
-      price: '500',
-      id: 1,
-      imagen: 'https://d2r9epyceweg5n.cloudfront.net/stores/001/335/204/products/apple-iphone-x-64gb-silver-used-20191122085356800-_w500_1-8532858c58bff3411615996662135414-640-0.jpg',
-    },
-    {
-      title: 'Iphone 8',
-      price: '400',
-      id: 2,
-      imagen: 'https://www.heb.com.mx/media/catalog/product/cache/9f5ec31302878493d9ed0ac40a398e12/i/p/iphone-8-gris-espacial-frente.jpg',
-    }
-  ])
+  let { categoryId } = useParams()
 
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState(productsGroup)
+
+  const [filtroBusqueda, setFiltroBusqueda] = useState('')
+
+  const editarValorFiltro = (e) => {
+    categoryId = null;
+    setFiltroBusqueda(e.target.value)
+  }
+
+  const [newProducts, setNewProducts] = useState([]);
 
   useEffect(() => {
-    new Promise((resolve, reject) => {
-      console.log('Cargando productos')
+    if (filtroBusqueda) {
+      const nuevasConsolasFiltradas = products.filter(product => product.title.toLowerCase().includes(filtroBusqueda.toLowerCase()))
+      setNewProducts(nuevasConsolasFiltradas)
+    } else {
+      const nuevasConsolasFiltradas = products.filter((product) => product.category === categoryId)
+      setNewProducts(nuevasConsolasFiltradas)
+    }
+    if (!filtroBusqueda && categoryId == null)
+      setNewProducts(products)
+  }, [filtroBusqueda]
+  )
 
-      setTimeout(() => {
-        resolve(setProducts(celulares))
-      }, 2000)
-    })
-  }, [])
+  return (
+    <div>
+      <Form inline>
+        <FormControl className="text-center" type='text' placeholder="Buscar Productos..." style={{ marginBottom: "20px" }}
+          value={filtroBusqueda}
+          onChange={editarValorFiltro}
+        />
+      </Form>
+      <section class="section-name padding-y-sm">
+        <div class="container">
+          <div class="row">
+            {newProducts.map((item) => (
+              <ItemList
+                title={item.title}
+                price={item.price}
+                image={item.image}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+    </div>
+  )
 
-  return products.map((item) => (
-    <ItemList
-      id={item.id}
-      title={item.title}
-      price={item.price}
-      imagen={item.imagen}
-    />
-  ))
+
+
+
 }
