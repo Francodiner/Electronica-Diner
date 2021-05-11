@@ -9,6 +9,7 @@ export const ItemList = (props) => {
                     <Link className="title" to={`/item/${props.title}`}>{props.title}</Link>
                     <div class="price mt-1">${props.price}</div>
                 </figcaption>
+                <button onClick={props.onAdd} type="button" class="btn btn-primary">Agregar al carrito</button>
                 <Link to={`/item/${props.title}`}><button type="button" class="btn btn-dark">Ver mas</button></Link>
             </div>
         </div>

@@ -16,7 +16,8 @@ export const ItemDetail = (props) => {
                         <p>{props.price}</p>
                         <ItemCount initial="1" stock="5"/>
                         <br></br>
-                        <button type="button" class="btn btn-primary">Comprar</button>
+                        <button type="button" onClick={props.onAdd} class="btn btn-primary">Añadir al carrito</button>
+                        <button type="button" onClick={props.onDelete} class="btn btn-danger">Eliminar del carrito</button>
                     </Col>
                 </Row>
             </Container>
