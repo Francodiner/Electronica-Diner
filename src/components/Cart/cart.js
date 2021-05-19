@@ -1,11 +1,17 @@
-import { Link } from 'react-router-dom'
-import { useContext } from "react";
 
+import { useContext, useEffect } from "react";
+import { CartContext } from '../../context/cartContext'
 
-export const Cart = (props) => {
-    return (
-        <div class="col-md-12">
-            <h1>Cart</h1>
-        </div>
+export const Cart = () => {
+    const { facu } = useContext(CartContext)
+
+    useEffect(
+        () => {
+            console.log(facu)
+        }, [facu]
     )
-}
+  
+    return (
+        <div></div>
+    )
+};

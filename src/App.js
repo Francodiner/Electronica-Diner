@@ -3,23 +3,20 @@ import { NavBar } from "./components/NavBar/navBar";
 import { ItemListContainer } from "./components/ItemListContainer/itemListContainer";
 import { ItemDetailContainer } from "./components/ItemDetailContainer/itemDetailContainer";
 import { Cart } from "./components/Cart/cart";
-import { CardGroup } from "react-bootstrap";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 function App() {
 
   return (
-    <div className="App">
-      <NavBar/>
-      <BrowserRouter>
+    <BrowserRouter>
+      <div className="App">
+        <NavBar />
         <Switch>
           <Route exact path='/'>
-            <CardGroup>
-              <ItemListContainer />
-            </CardGroup>
+            <ItemListContainer />
           </Route>
           <Route path='/category/:categoryId' >
-              <ItemListContainer />
+            <ItemListContainer />
           </Route>
           <Route path='/item/:productId' >
             <ItemDetailContainer />
@@ -28,9 +25,8 @@ function App() {
             <Cart />
           </Route>
         </Switch>
-      </BrowserRouter>
-
-    </div>
+      </div>
+    </BrowserRouter>
   );
 }
 

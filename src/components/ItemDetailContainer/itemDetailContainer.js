@@ -1,41 +1,29 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { ItemDetail } from "../ItemDetail/itemDetail"
-import { productsGroup } from "../ProductsGroup/productsGroup";
 import { useParams, } from 'react-router'
-import { useContext } from "react";
-import { CartContext } from '../../context/cartContext'
+import { getFirestore } from '../../firebase'
+
 export const ItemDetailContainer = () => {
 
-    const { productId } = useParams();
-    const [ product, setProduct ] = useState({})
-    const { addToCart } = useContext(CartContext);
-    const { removeFromCart } = useContext(CartContext);
+  const { productId } = useParams();
+  const [product, setProduct] = useState({})
 
-    const getProducts = new Promise((res, rej) => {
-        setTimeout(function () {
-            res(productsGroup);
-        }, 2000);
-    });
+  useEffect(() => {
+    const db = getFirestore()
+    const ItemCollection = db.collection('items')
+    const producto = ItemCollection.doc(productId)
 
-    useEffect(() => {
-        getProducts
-            .then((res) => {
-                res.forEach((item) => {
-                    if (item.title === productId) {
-                        setProduct(item);
-                    }
-                });
-            })
-            .catch((err) => alert(err))
-    }, []);
+    producto.get().then((doc) => {
+      if (!doc.exists) {
+        console.log("No existe");
+      }
+      setProduct({ productId: doc.id, ...doc.data() });
+    }).catch((error) => console.error(error))
+    console.log(product)
+  }, [productId])
 
-    return (
-        <ItemDetail  
-        title={product.title}
-        price={product.price}
-        image={product.image}
-        onAdd={() => addToCart(product)}
-        onDelete={() => removeFromCart(product)}
-        />
-    )
+  return (
+    <ItemDetail product = {product}
+    />
+  )
 }

@@ -1,16 +1,24 @@
 import { Link } from 'react-router-dom'
-
+import { useContext, useEffect } from "react";
+import { CartContext } from '../../context/cartContext'
 export const ItemList = (props) => {
+    const { cart } = useContext(CartContext)
+
+    useEffect(
+        () => {
+            console.log(cart)
+        }, [cart]
+    )
+
     return (
-        <div class="col-md-3">
-            <div href="#" class="card card-product-grid">
-                <Link className="img-wrap" to={`/item/${props.title}`}> <img src={props.image} /></Link>
-                <figcaption class="info-wrap">
-                    <Link className="title" to={`/item/${props.title}`}>{props.title}</Link>
-                    <div class="price mt-1">${props.price}</div>
+        <div className="col-md-12">
+            <div href="#" className="card card-product-grid">
+                <Link className="img-wrap" to={`/item/${props.id}`}> <img src={props.image} /></Link>
+                <figcaption className="info-wrap">
+                    <Link className="title" to={`/item/${props.id}`}>{props.title}</Link>
+                    <div className="price mt-1">${props.price}</div>
                 </figcaption>
-                <button onClick={props.onAdd} type="button" class="btn btn-primary">Agregar al carrito</button>
-                <Link to={`/item/${props.title}`}><button type="button" class="btn btn-dark">Ver mas</button></Link>
+                <Link to={`/item/${props.id}`}><button type="button" className="btn btn-dark">Ver mas</button></Link>
             </div>
         </div>
     )

@@ -1,22 +1,20 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { ItemList } from "../ItemList/itemList"
-import { Form, FormControl } from "react-bootstrap";
-import { productsGroup } from "../ProductsGroup/productsGroup";
+import { Form, FormControl, CardGroup } from "react-bootstrap";
 import { useParams } from 'react-router'
-import { CartContext } from '../../context/cartContext'
-import { Fragment } from "react";
+import { getFirestore } from '../../firebase'
 
 export function ItemListContainer() {
 
   let { categoryId } = useParams()
 
-  const { addToCart } = useContext(CartContext);
-
-  const products = productsGroup.filter((item) => item.category === categoryId)
+  /*  const products = productsGroup.filter((item) => item.category === categoryId) */
 
   const [filtroBusqueda, setFiltroBusqueda] = useState('')
 
   const [categoriesWithDiscount] = useState(['xbox'])
+
+  const [isEmptyCategory, setIsEmptyCategory] = useState(false)
 
   const hasDiscounts = (categoryId) => categoriesWithDiscount.some(category => category === categoryId)
 
@@ -28,17 +26,35 @@ export function ItemListContainer() {
   const [newProducts, setNewProducts] = useState([]);
 
   useEffect(() => {
-    if (filtroBusqueda) {
-      const nuevasConsolasFiltradas = products.filter(product => product.title.toLowerCase().includes(filtroBusqueda.toLowerCase()))
-      setNewProducts(nuevasConsolasFiltradas)
-    } else {
-      const nuevasConsolasFiltradas = products.filter((product) => product.category === categoryId)
-      setNewProducts(nuevasConsolasFiltradas)
-    }
-    if (!filtroBusqueda && categoryId == null)
-      setNewProducts(products)
-  }, [filtroBusqueda]
-  )
+    const db = getFirestore()
+    const ItemCollection = db.collection('items')
+    ItemCollection.get().then(
+      (querySnapshot) => {
+        const data = querySnapshot.docs.map((doc) => {
+          return { id: doc.id, ...doc.data() };
+        })
+        console.log(data)
+        const itemsFiltrados = data.filter((product) => product.categoryId === categoryId)
+        if (!categoryId) {
+          setNewProducts(data)
+          if (filtroBusqueda) {
+            const nuevasConsolasFiltradas = newProducts.filter(product => product.title.toLowerCase().includes(filtroBusqueda.toLowerCase()))
+            setNewProducts(nuevasConsolasFiltradas)
+          }
+        } else {
+          setNewProducts(itemsFiltrados)
+          if (filtroBusqueda) {
+            const nuevasConsolasFiltradas = newProducts.filter(product => product.title.toLowerCase().includes(filtroBusqueda.toLowerCase()))
+            setNewProducts(nuevasConsolasFiltradas)
+          }
+          else if (itemsFiltrados.length === 0) {
+            setIsEmptyCategory(true)
+          }
+
+        }
+      }
+    ).catch((error) => console.error(error))
+  }, [filtroBusqueda])
 
   return (
     <div>
@@ -48,31 +64,26 @@ export function ItemListContainer() {
           onChange={editarValorFiltro}
         />
       </Form>
-      <section class="section-name padding-y-sm">
-        <div class="container">
-          <div class="row">
-          {hasDiscounts(categoryId) && <p>Esta categoria tiene descuento</p>}
-            {newProducts.length < 1 ?
-              <Fragment>
-                <p>Disculpa no tengo </p>
-              </Fragment>
-              :
-              newProducts.map((item) => (
-                <ItemList
-                  title={item.title}
-                  price={item.price}
-                  image={item.image}
-                  onAdd={() => addToCart(item)}
-                />
-              ))
-            }
+      <CardGroup>
+        <section className="section-name padding-y-sm">
+          <div className="container">
+            <div className="row">
+              {hasDiscounts(categoryId) && <p> Esta categoria tiene descuento</p>}
+              {
+                isEmptyCategory ? (<p>Esta categoria actualmente no tiene productos</p>) : (
+                  newProducts.map((item) => (
+                    <ItemList
+                      id={item.id}
+                      title={item.title}
+                      price={item.price}
+                      image={item.image}
+                    />
+                  ))
+                )}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </CardGroup>
     </div>
   )
-
-
-
-
 }
