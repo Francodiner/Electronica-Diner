@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Nav, Navbar, NavDropdown, Form, FormControl } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { CartWidget } from "../CartWidget/cartWidget";
 
 export const NavBar = () => {
@@ -31,7 +32,7 @@ export const NavBar = () => {
             <Nav.Link href="/nosotros">Nosotros</Nav.Link>
             <Nav.Link href="/contacto">Contacto</Nav.Link>
             <Nav.Item className="ml-auto">
-              <Nav.Link href="/cart"> <CartWidget /></Nav.Link>
+              <Link to="/cart"> <CartWidget /></Link>
             </Nav.Item>
           </Nav>
           <Form inline>
