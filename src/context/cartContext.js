@@ -3,40 +3,51 @@ import { createContext, useEffect, useState } from 'react'
 export const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-    const [cart, setCart] = useState([])
+
     const [quantity, setQuantity] = useState(0)
-    const facu = 'facu';
 
-    const addToCart = (item) => {
-        setCart([...cart, item])
-        console.log('aca pasa')
-    }
+    const [cart, setCart] = useState([])
 
-    const removeFromCart= (itemId) => {
-        const newCart = cart.filter((item) => item.id === itemId)
-        setCart(newCart)
-    }
+    const addToCart = (id, name, price, image, qty) => {
+        const existingIndex = cart.findIndex((item) => item.id === id);
 
- /*   const isInCart = (id) => {
-        const newCart = cart.filter((item) => item.id == id)
-        if(newCart){
-            console.log(true)
-            return true;
-        }else{
-            console.log(false)
-            return false;
+        if (existingIndex >= 0) {
+            cart[existingIndex] = {
+                ...cart[existingIndex],
+                qty: cart[existingIndex].qty + qty,
+            }
+        } else {
+            setCart([
+                ...cart,
+                {
+                    id: id,
+                    name: name,
+                    price: price,
+                    image: image,
+                    qty: qty,
+                },
+            ])
         }
-    } */
+    };
+
+    const removeProduct = (itemInCart) => {
+        const existingIndex = cart.findIndex((item) => item.id === itemInCart.id);
+        const cartCopy = Array.from(cart);
+
+        if (existingIndex >= 0) {
+            cartCopy.splice(existingIndex, 1);
+            setCart(cartCopy);
+        }
+    };
 
     useEffect(
         () => {
-            setQuantity(cart.length)
             console.log(cart)
-        }, [cart]
+        }, []
     )
 
     return (
-        <CartContext.Provider value={{ cart, addToCart, removeFromCart, quantity, facu }}>
+        <CartContext.Provider value={{ addToCart, cart, setCart, removeProduct, quantity }}>
             {children}
         </CartContext.Provider>
     )

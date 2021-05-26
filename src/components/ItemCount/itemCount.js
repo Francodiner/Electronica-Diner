@@ -1,24 +1,43 @@
-import { Button, Form, FormControl } from "react-bootstrap";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
-export const ItemCount = (props) => {
+export const ItemCount = ({ stock, initial, onAdd }) => {
 
-    const [cantidad, setCantidad] = useState(0);
+    const [counter, setCounter] = useState(initial);
 
-    const sumarContador = (e) => {
-        setCantidad({
-            contador: e.target.value 
-        })
-    }
+    const increment = () => {
+        if (counter < stock) {
+            setCounter(counter + 1);
+        }
+    };
 
-    const mostrar = () => {
-        alert(`Queres ${cantidad.contador} productos para comprar.`)
-    }
+    const decrement = () => {
+        if (counter > initial) {
+            setCounter(counter - 1);
+        }
+    };
 
     return (
-        <Form inline>
-            <FormControl type='number' min={props.initial} max={props.stock} className="mr-sm-2 ml-auto" onChange={sumarContador} />
-            <Button variant="dark" onClick={mostrar}>Comprar</Button>
-        </Form>
+        <div className="counterWrapper">
+            <div className="counter">
+                <div className="buttons">
+                    <button className="button" onClick={increment}>
+                        {" "}
+            +{" "}
+                    </button>
+                    <div>
+                        <h3>Cantidad: {counter}</h3>
+                    </div>
+                    <button className="button" onClick={decrement}>
+                        {" "}
+            -{" "}
+                    </button>
+                </div>
+                <Link className="button2" onClick={() => onAdd(counter)}>
+                    Add to cart
+        </Link>
+            </div>
+        </div>
     );
 }
+

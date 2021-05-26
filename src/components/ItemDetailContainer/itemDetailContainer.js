@@ -1,7 +1,8 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { ItemDetail } from "../ItemDetail/itemDetail"
 import { useParams, } from 'react-router'
 import { getFirestore } from '../../firebase'
+import "./itemDetail.css";
 
 export const ItemDetailContainer = () => {
 
@@ -19,11 +20,11 @@ export const ItemDetailContainer = () => {
       }
       setProduct({ productId: doc.id, ...doc.data() });
     }).catch((error) => console.error(error))
-    console.log(product)
   }, [productId])
 
   return (
-    <ItemDetail product = {product}
-    />
+
+    <ItemDetail product={product} />
+
   )
 }

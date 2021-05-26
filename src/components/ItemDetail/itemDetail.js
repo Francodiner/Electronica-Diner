@@ -1,28 +1,55 @@
-import { Container, Row, Col } from "react-bootstrap";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { CartContext } from '../../context/cartContext'
-export const ItemDetail = ({product}) => {
+import { ItemCount } from "../ItemCount/itemCount";
+import { Link } from "react-router-dom";
+
+export const ItemDetail = ({ product }) => {
     const { addToCart } = useContext(CartContext);
-    const { removeFromCart } = useContext(CartContext);
-  
+    const [qty, setQty] = useState(0);
+    const [finishButton, setFinishButton] = useState(false);
+
+    const goToPayment = () => {
+        addToCart(product.id, product.name, product.price, product.image, qty);
+    };
+
+    const onAdd = (qty) => {
+        setQty(qty);
+    };
+
+    useEffect(() => {
+        if (qty !== 0) {
+            setFinishButton(true);
+        }
+    }, [qty]);
+
     return (
-        <div style={{ marginTop: '30px' }}>
-            <Container>
-                <Row>
-                    <Col xs={6} md={4}>
-                        <div href="#" className="card card-product-grid">
-                            <img className="img-wrap" src={product.image} />
-                        </div>
-                    </Col>
-                    <Col xs={6} md={4}>
-                        <h1>{product.title}</h1>
-                        <p>{product.price}</p>
-                        <br></br>
-                        <button type="button" onClick={() => addToCart(product)} className="btn btn-primary">Añadir al carrito</button>
-                        <button type="button" onClick={() => removeFromCart(product)} className="btn btn-danger">Eliminar del carrito</button>
-                    </Col>
-                </Row>
-            </Container>
+        <div className="itemDetail">
+            <img src={product.image} alt="Producto cargando..." />
+            <h2>{product.name}</h2>
+            <h4>${product.price}</h4>
+            <ItemCount stock={product.stock} initial={1} onAdd={onAdd} />
+            {finishButton ? (
+                <Link
+                    to="/cart"
+                    className="button2"
+                    onClick={() => {
+                        goToPayment();
+                    }}
+                >
+                    Go to payment
+                </Link>
+            ) : null}
+            <Link
+                className="buttonClose"
+                to="/"
+                onClick={() => {
+                    setQty(0);
+                }}
+            >
+                Go Back!
+          </Link>
         </div>
-    )
+    );
 }
+
+
