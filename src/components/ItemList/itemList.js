@@ -11,9 +11,9 @@ export const ItemList = (props) => {
     )
 
     return (
-        <div className="col-md-12">
+        <div className="col-md-6" >
             <div href="#" className="card card-product-grid">
-                <Link className="img-wrap" to={`/item/${props.id}`}> <img src={props.image} /></Link>
+                <Link className="img-wrap" to={`/item/${props.id}`}> <img style={{height: '350px'}}src={props.image}></img></Link>
                 <figcaption className="info-wrap">
                     <Link className="title" to={`/item/${props.id}`}>{props.title}</Link>
                     <div className="price mt-1">${props.price}</div>

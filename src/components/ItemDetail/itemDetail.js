@@ -4,16 +4,17 @@ import { ItemCount } from "../ItemCount/itemCount";
 import { Link } from "react-router-dom";
 
 export const ItemDetail = ({ product }) => {
-    const { addToCart } = useContext(CartContext);
+    const { addToCart, quantity, setQuantity } = useContext(CartContext);
     const [qty, setQty] = useState(0);
     const [finishButton, setFinishButton] = useState(false);
 
     const goToPayment = () => {
-        addToCart(product.id, product.name, product.price, product.image, qty);
+        addToCart(product.productId, product.title, product.price, product.image, qty);
     };
 
     const onAdd = (qty) => {
         setQty(qty);
+        setQuantity(quantity + qty)
     };
 
     useEffect(() => {
@@ -25,7 +26,7 @@ export const ItemDetail = ({ product }) => {
     return (
         <div className="itemDetail">
             <img src={product.image} alt="Producto cargando..." />
-            <h2>{product.name}</h2>
+            <h2>{product.title}</h2>
             <h4>${product.price}</h4>
             <ItemCount stock={product.stock} initial={1} onAdd={onAdd} />
             {finishButton ? (

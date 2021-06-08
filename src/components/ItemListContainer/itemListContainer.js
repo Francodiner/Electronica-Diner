@@ -19,7 +19,6 @@ export function ItemListContainer() {
   const hasDiscounts = (categoryId) => categoriesWithDiscount.some(category => category === categoryId)
 
   const editarValorFiltro = (e) => {
-    categoryId = null;
     setFiltroBusqueda(e.target.value)
   }
 
@@ -50,11 +49,10 @@ export function ItemListContainer() {
           else if (itemsFiltrados.length === 0) {
             setIsEmptyCategory(true)
           }
-
         }
       }
     ).catch((error) => console.error(error))
-  }, [filtroBusqueda])
+  }, [])
 
   return (
     <div>
@@ -64,26 +62,28 @@ export function ItemListContainer() {
           onChange={editarValorFiltro}
         />
       </Form>
-      <CardGroup>
-        <section className="section-name padding-y-sm">
-          <div className="container">
-            <div className="row">
-              {hasDiscounts(categoryId) && <p> Esta categoria tiene descuento</p>}
-              {
-                isEmptyCategory ? (<p>Esta categoria actualmente no tiene productos</p>) : (
-                  newProducts.map((item) => (
-                    <ItemList
-                      id={item.id}
-                      title={item.title}
-                      price={item.price}
-                      image={item.image}
-                    />
-                  ))
-                )}
+      
+      <CardGroup style={{display: 'flex', flexDirection: 'row'}}>
+        <div style={{flex: 1, height: '100%'}} >
+          <section className="section-name padding-y-sm">
+            <div className="container">
+              <div className="row">
+                {
+                  isEmptyCategory ? (<p>Esta categoria actualmente no tiene productos</p>) : (
+                    newProducts.map((item) => (
+                      <ItemList
+                        id={item.id}
+                        title={item.title}
+                        price={item.price}
+                        image={item.image}
+                      />
+                    ))
+                  )}
+              </div>
             </div>
+          </section>
           </div>
-        </section>
-      </CardGroup>
+        </CardGroup>
     </div>
   )
 }

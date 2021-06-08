@@ -8,9 +8,8 @@ export const CartProvider = ({ children }) => {
 
     const [cart, setCart] = useState([])
 
-    const addToCart = (id, name, price, image, qty) => {
-        const existingIndex = cart.findIndex((item) => item.id === id);
-
+    const addToCart = (productId, title, price, image, qty) => {
+        const existingIndex = cart.findIndex((item) => item.productId === productId);
         if (existingIndex >= 0) {
             cart[existingIndex] = {
                 ...cart[existingIndex],
@@ -20,8 +19,8 @@ export const CartProvider = ({ children }) => {
             setCart([
                 ...cart,
                 {
-                    id: id,
-                    name: name,
+                    productId: productId,
+                    title: title,
                     price: price,
                     image: image,
                     qty: qty,
@@ -31,23 +30,17 @@ export const CartProvider = ({ children }) => {
     };
 
     const removeProduct = (itemInCart) => {
-        const existingIndex = cart.findIndex((item) => item.id === itemInCart.id);
+        const existingIndex = cart.findIndex((item) => item.productId === itemInCart.productId);
         const cartCopy = Array.from(cart);
-
         if (existingIndex >= 0) {
             cartCopy.splice(existingIndex, 1);
             setCart(cartCopy);
         }
+        setQuantity(quantity - itemInCart.qty);
     };
 
-    useEffect(
-        () => {
-            console.log(cart)
-        }, []
-    )
-
     return (
-        <CartContext.Provider value={{ addToCart, cart, setCart, removeProduct, quantity }}>
+        <CartContext.Provider value={{ addToCart, cart, setCart, removeProduct, quantity, setQuantity }}>
             {children}
         </CartContext.Provider>
     )
