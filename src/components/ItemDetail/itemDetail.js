@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import { CartContext } from '../../context/cartContext'
 import { ItemCount } from "../ItemCount/itemCount";
 import { Link } from "react-router-dom";
@@ -6,22 +6,13 @@ import { Link } from "react-router-dom";
 export const ItemDetail = ({ product }) => {
     const { addToCart, quantity, setQuantity } = useContext(CartContext);
     const [qty, setQty] = useState(0);
-    const [finishButton, setFinishButton] = useState(false);
-
-    const goToPayment = () => {
-        addToCart(product.productId, product.title, product.price, product.image, qty);
-    };
-
+   
     const onAdd = (qty) => {
         setQty(qty);
         setQuantity(quantity + qty)
+        addToCart(product.productId, product.title, product.price, product.image, qty);
+        alert("Se ha añadido al carrito")
     };
-
-    useEffect(() => {
-        if (qty !== 0) {
-            setFinishButton(true);
-        }
-    }, [qty]);
 
     return (
         <div className="itemDetail">
@@ -29,17 +20,7 @@ export const ItemDetail = ({ product }) => {
             <h2>{product.title}</h2>
             <h4>${product.price}</h4>
             <ItemCount stock={product.stock} initial={1} onAdd={onAdd} />
-            {finishButton ? (
-                <Link
-                    to="/cart"
-                    className="button2"
-                    onClick={() => {
-                        goToPayment();
-                    }}
-                >
-                    Go to payment
-                </Link>
-            ) : null}
+
             <Link
                 className="buttonClose"
                 to="/"
@@ -47,7 +28,7 @@ export const ItemDetail = ({ product }) => {
                     setQty(0);
                 }}
             >
-                Go Back!
+                Ir atras
           </Link>
         </div>
     );

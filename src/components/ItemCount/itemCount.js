@@ -34,7 +34,7 @@ export const ItemCount = ({ stock, initial, onAdd }) => {
                     </button>
                 </div>
                 <Link className="button2" onClick={() => onAdd(counter)}>
-                    Add to cart
+                    Añadir al carrito
         </Link>
             </div>
         </div>

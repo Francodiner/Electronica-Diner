@@ -1,22 +1,23 @@
 
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { getFirestore } from '../../firebase'
 import { CartContext } from '../../context/cartContext'
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
+import { Form, Button } from "react-bootstrap";
 import "./cart.css";
 
 export const Cart = () => {
 
-    const { cart, removeProduct } = useContext(CartContext);
+    const { cart, removeProduct, setCart, setQuantity } = useContext(CartContext);
     const [phone, setPhone] = useState('')
     const [email, setEmail] = useState('')
     const [name, setName] = useState('')
+    const history = useHistory()
 
     const calculatePrice = (price, qty) => {
         return price * qty;
-
     };
-
+   
     function fire(e) {
         e.preventDefault();
 
@@ -32,6 +33,9 @@ export const Cart = () => {
             }
         )
         alert("La compra se ha realizado con exito")
+        setCart([])
+        setQuantity(0)
+        history.push("/") 
     }
 
     return (
@@ -56,15 +60,30 @@ export const Cart = () => {
             ) : (
                 <h1>No hay items en el carrito</h1>
             )}
-            <form>
-                <label>Nombre</label>
-                <input onChange={(e) => setName(e.target.value)}></input>
-                <label>Email</label>
-                <input onChange={(e) => setEmail(e.target.value)}></input>
-                <label>Telefono</label>
-                <input onChange={(e) => setPhone(e.target.value)}></input>
-            </form>
-            <button color='danger' onClick={(e) => fire(e)}>Realizar Compra</button>
+
+            {cart.length ? (
+                <div><Form className="margin-form">
+                    <Form.Group>
+                        <Form.Label>Nombre</Form.Label>
+                        <Form.Control type="text" onChange={(e) => setName(e.target.value)} placeholder="Ingresar nombre" />
+                    </Form.Group>
+
+                    <Form.Group>
+                        <Form.Label>Email</Form.Label>
+                        <Form.Control type="email" onChange={(e) => setEmail(e.target.value)} placeholder="Ingresar email" />
+                    </Form.Group>
+                    <Form.Group >
+                        <Form.Label>Telefono</Form.Label>
+                        <Form.Control type="text" onChange={(e) => setPhone(e.target.value)} placeholder="Ingresar telefono" />
+                    </Form.Group>
+                </Form>
+
+                    <Button variant="primary" onClick={(e) => fire(e)}>
+                        Comprar
+                    </Button></div>
+            ) : (
+                <div></div>
+            )}
         </div>
     );
 };
